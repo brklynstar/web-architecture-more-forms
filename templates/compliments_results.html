@@ -8,6 +8,12 @@ Compliments Results
 
 <!-- Your HTML code goes here! -->
 
+<h3>Howdy, {{users_name}}!</h3>
+<p>You are totally:</p>
+{%for result in result%}
+<ul>
+    <li> {{result}} </li>
+</ul>
 
-
+{% endfor %}
 {% endblock %}

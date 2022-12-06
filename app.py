@@ -56,7 +56,7 @@ def compliments():
 @app.route('/compliments_results')
 def compliments_results():
     """Show the user some compliments."""
-    user = request.args.get("user")
+    users_name = request.args.get("users_name")
     wants_compliments = request.args.get("wants_compliments")
     num_compliments = request.args.get("num_compliments")
 
@@ -64,12 +64,12 @@ def compliments_results():
         num_compliments = int(num_compliments)
         result = random.sample(list_of_compliments, num_compliments)
     elif wants_compliments == "no":
-        result = "Empty"
+        result = ""
     else:
         result = None
 
     context = {
-       'user' : user,
+       'users_name' : users_name,
        'wants_compliments' : wants_compliments,
        'num_compliments' : num_compliments,
        'result' : result
@@ -93,13 +93,23 @@ animal_to_fact = {
 @app.route('/animal_facts')
 def animal_facts():
     """Show a form to choose an animal and receive facts."""
-
+    
     # TODO: Collect the form data and save as variables
+    
+    animal = request.args.get('animal')
+    
+    animal_to_fact=''
+    if animal != None:
+        animal_to_fact = animal_to_fact[animal]
+    
+    
 
     context = {
-        # TODO: Enter your context variables here for:
+        
         # - the list of all animals (get from animal_to_fact)
+        'animal' : animal,
         # - the chosen animal fact (may be None if the user hasn't filled out the form yet)
+        'animal_to_fact': animal_to_fact
     }
     return render_template('animal_facts.html', **context)
 
