@@ -1,11 +1,12 @@
-from flask import Flask, request, render_template
-from PIL import Image, ImageFilter
-from pprint import PrettyPrinter
-from dotenv import load_dotenv
 import json
 import os
 import random
+from pprint import PrettyPrinter
+
 import requests
+from dotenv import load_dotenv
+from flask import Flask, render_template, request
+from PIL import Image, ImageFilter
 
 load_dotenv()
 
@@ -55,8 +56,23 @@ def compliments():
 @app.route('/compliments_results')
 def compliments_results():
     """Show the user some compliments."""
+    user = request.args.get("user")
+    wants_compliments = request.args.get("wants_compliments")
+    num_compliments = request.args.get("num_compliments")
+
+    if wants_compliments == "yes":
+        num_compliments = int(num_compliments)
+        result = random.sample(list_of_compliments, num_compliments)
+    elif wants_compliments == "no":
+        result = "Empty"
+    else:
+        result = None
+
     context = {
-        # TODO: Enter your context variables here.
+       'user' : user,
+       'wants_compliments' : wants_compliments,
+       'num_compliments' : num_compliments,
+       'result' : result
     }
 
     return render_template('compliments_results.html', **context)
