@@ -1,12 +1,11 @@
+from flask import Flask, request, render_template
+from PIL import Image, ImageFilter
+from pprint import PrettyPrinter
+from dotenv import load_dotenv
 import json
 import os
 import random
-from pprint import PrettyPrinter
-
 import requests
-from dotenv import load_dotenv
-from flask import Flask, render_template, request
-from PIL import Image, ImageFilter
 
 load_dotenv()
 
@@ -64,7 +63,7 @@ def compliments_results():
         num_compliments = int(num_compliments)
         result = random.sample(list_of_compliments, num_compliments)
     elif wants_compliments == "no":
-        result = ""
+        result = "No Results"
     else:
         result = None
 
@@ -96,20 +95,16 @@ def animal_facts():
     
     # TODO: Collect the form data and save as variables
     
-    animal = request.args.get('animal')
+    chosen_animal = request.args.get('animal')
+    animals = list(animal_to_fact.keys())
     
-    animal_to_fact=''
-    if animal != None:
-        animal_to_fact = animal_to_fact[animal]
-    
-    
-
     context = {
         
         # - the list of all animals (get from animal_to_fact)
-        'animal' : animal,
+        'list_of_animals' : animals,
         # - the chosen animal fact (may be None if the user hasn't filled out the form yet)
-        'animal_to_fact': animal_to_fact
+        'animal_fact' : animal_to_fact.get(chosen_animal),
+        'animal_choice' : chosen_animal
     }
     return render_template('animal_facts.html', **context)
 
