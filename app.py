@@ -220,8 +220,7 @@ def gif_search():
         # TODO: Get the search query & number of GIFs requested by the user, store each as a 
         # variable
         search_query = request.form.get('search_query')
-        num_of_gifs = request.form.get('quantity')
-
+        quantity = request.form.get('quantity')
         response = requests.get(
             TENOR_URL,
             {
@@ -231,7 +230,7 @@ def gif_search():
                 # - 'limit': the number of GIFs requested
                 'q': search_query,
                 'key': API_KEY,
-                'limit': num_of_gifs
+                'limit': quantity
             })
 
         gifs = json.loads(response.content).get('results')
@@ -246,7 +245,7 @@ def gif_search():
         # list of media objects. Get the gif and use it's 
         # url in your template to display the gif. 
         # pp.pprint(gifs)
-
+        pp.pprint(gifs)
         return render_template('gif_search.html', **context)
     else:
         return render_template('gif_search.html')
